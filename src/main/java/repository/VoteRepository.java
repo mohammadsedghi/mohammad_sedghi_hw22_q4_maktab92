@@ -1,4 +1,8 @@
 package repository;
 
-public interface VoteRepository {
+import base.repository.BaseRepository;
+import entity.Person;
+import entity.Vote;
+
+public interface VoteRepository extends BaseRepository<Vote,Long> {
 }
