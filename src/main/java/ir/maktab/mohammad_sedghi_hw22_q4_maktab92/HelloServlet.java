@@ -17,6 +17,7 @@ public class HelloServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       String username=request.getParameter("fname");
       String password=request.getParameter("lname");
+      if (username.equals("aaa"))response.sendRedirect("electionPage.html");
       try(PrintWriter out=response.getWriter()){
           out.print(username);
       }
