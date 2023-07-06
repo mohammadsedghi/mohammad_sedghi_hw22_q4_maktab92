@@ -51,35 +51,35 @@
         </div>
     </div>
 </nav>
-<form action="./greeting" method="post">
+<form action="./greeting" method="post" id="checkboxForm">
 <div class="back">
     <p class="vstack gap-3 fw-bold">Which team will be the champion of the Premier League this season?</p>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheck1">
+        <input class="form-check-input" type="checkbox" value="a" id="flexCheck1" name="option">
         <label class="form-check-label" for="flexCheck1">
             <p class="fw-bold">1)Perspolise Tehran</p>
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheck2">
+        <input class="form-check-input" type="checkbox" value="b" id="flexCheck2" name="option">
         <label class="form-check-label" for="flexCheck2">
             <p class="fw-bold">2)Esteghlal Tehran</p>
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flexCheck3">
+        <input class="form-check-input" type="checkbox" value="c" id="flexCheck3" name="option">
         <label class="form-check-label" for="flexCheck3">
             <p class="fw-bold">3)TeraktorSazi Tabriz</p>
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flex4">
+        <input class="form-check-input" type="checkbox" value="d" id="flex4" name="option">
         <label class="form-check-label" for="flex4">
             <p class="fw-bold">4)Sepahan Esfahan</p>
         </label>
     </div>
     <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="flex5">
+        <input class="form-check-input" type="checkbox" value="f" id="flex5" name="option">
         <label class="form-check-label" for="flex5">
             <p class="fw-bold">5)none of the above</p>
         </label>
@@ -90,5 +90,119 @@
     </div>
 </div>
 </form>
+<script>
+    // const form = document.getElementById('checkboxForm');
+    // const checkboxes = form.elements['option'];
+    //
+    // form.addEventListener('submit', (event) => {
+    //     const checkedCount = Array.from(checkboxes).filter((checkbox) => checkbox.checked).length;
+    //
+    //     if (checkedCount !== 1) {
+    //         event.preventDefault();
+    //         alert('Please choose exactly one option.');
+    //     }
+    // });
+    //***********************************************************************************
+    // const form = document.getElementById('checkboxForm');
+    // const checkboxes = form.elements['option'];
+    //
+    // for (let i = 0; i < checkboxes.length; i++) {
+    //     checkboxes[i].addEventListener('change', function() {
+    //         if (this.checked) {
+    //             for (let j = 0; j < checkboxes.length; j++) {
+    //                 if (checkboxes[j] !== this) {
+    //                     checkboxes[j].checked = false;
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
+    // ************************************************************************
+    $(document).ready(function() {
+        $('#checkboxForm').submit(function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var selectedChoice = $('input[name="option"]:checked').map(function() {
+                return this.value;
+            }).get(); // Get an array of selected choices
+            // Get the selected choice
+
+            $.ajax({
+                url: 'http://localhost:8080/mohammad_sedghi_hw22_q4_maktab92_war_exploded/greeting', // Servlet URL
+                type: 'POST',
+                data: { choices: selectedChoice }, // Send the selected choice to the servlet
+                traditional: true,
+                success: function(response) {
+                    // Handle the response from the servlet
+                    console.log('Vote submitted successfully');
+                    // Add your own logic here to display a success message or update the UI
+                },
+                error: function() {
+                    console.log('Error submitting vote');
+                    // Add your own error handling logic here
+                }
+            });
+        });
+    });
+    //*****************************************************************************
+    // function sendForm() {
+    //     var formValues = $("#checkboxForm").serializeArray(); // Get all form values as an array
+    //
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "http://localhost:8080/mohammad_sedghi_hw22_q4_maktab92_war_exploded/greeting",// Replace with the URL of your servlet
+    //         data: JSON.stringify(formValues), // Convert the form values to JSON string
+    //         contentType: "application/json", // Set the content type as JSON
+    //         success: function(response) {
+    //             // Handle the response from the servlet
+    //             console.log(response);
+    //         },
+    //         error: function(xhr, status, error) {
+    //             // Handle the error
+    //             console.log("Error: " + error);
+    //         }
+    //     });
+    // }
+        //*****************************************************************************
+    // function sendForm() {
+    //     let formValues = $("#checkboxForm").serialize(); // Get all form values
+    //
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "http://localhost:8080/mohammad_sedghi_hw22_q4_maktab92_war_exploded/greeting", // Replace with the URL of your servlet
+    //         data: formValues,
+    //         success: function(response) {
+    //             // Handle the response from the servlet
+    //             console.log(response);
+    //         },
+    //         error: function(xhr, status, error) {
+    //             // Handle the error
+    //             console.log("Error: " + error);
+    //         }
+    //     });
+    // }
+    // ********************************************************************************
+    const form = document.getElementById('checkboxForm');
+    const checkboxes = form.elements['option'];
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let selectedCheckboxValue = null;
+
+
+        for (let i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                selectedCheckboxValue = checkboxes[i].value;
+                break;
+            }
+        }
+
+        if (selectedCheckboxValue !== null) {
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', 'http://localhost:8080/mohammad_sedghi_hw22_q4_maktab92_war_exploded/greeting?selectedValue=' + encodeURIComponent(selectedCheckboxValue));
+            xhr.send();
+        }
+    });
+</script>
 </body>
 </html>

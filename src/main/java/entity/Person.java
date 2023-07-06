@@ -19,6 +19,6 @@ public class Person extends BaseEntity<Long> {
     String family;
     String username;
     String password;
-    @ManyToOne
-    Vote vote;
+//    @ManyToOne
+//    Vote vote;
 }
